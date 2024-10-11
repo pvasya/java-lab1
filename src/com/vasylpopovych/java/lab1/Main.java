@@ -43,7 +43,7 @@ public class Main {
         System.out.println("\nThe toys for teens:");
         GameRoom.findToysByAgeGroup(AGE_GROUP.TEENS).forEach(System.out::println);
 
-        System.out.println("\nDollImpl:");
+        System.out.println("\nDollToy:");
         GameRoom.findToysByType(DollToy.class).forEach(System.out::println);
 
         System.out.println("\nLarge toys:");
