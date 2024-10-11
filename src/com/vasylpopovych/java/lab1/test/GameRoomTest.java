@@ -1,8 +1,10 @@
 package com.vasylpopovych.java.lab1.test;
 
 
-import com.vasylpopovych.java.lab1.*;
-
+import com.vasylpopovych.java.lab1.gameroom.GameRoom;
+import com.vasylpopovych.java.lab1.gameroom.toys.*;
+import com.vasylpopovych.java.lab1.gameroom.toys.Toy;
+import com.vasylpopovych.java.lab1.gameroom.toys.impl.BouncyCar;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,33 +18,33 @@ class GameRoomTest {
 
     @BeforeEach
     void setUp() {
-        gameRoom = new GameRoom(300.0);
+        gameRoom = new GameRoom(500.0);
     }
 
     @Test
     void addToyWithSufficientBudgetShouldAddToy() {
-        Toy car = new SmallCar("Mini Car", 50.0, AGE_GROUP.KIDS);
+        Toy car = new BouncyCar("Mini Car", 50.0, AGE_GROUP.KIDS, SIZE.LARGE);
         gameRoom.addToy(car);
 
-        List<Toy> toys = gameRoom.findToysByType(SmallCar.class);
+        List<Toy> toys = gameRoom.findToysByType(BouncyCar.class);
         assertEquals(1, toys.size());
         assertEquals(car, toys.getFirst());
     }
 
     @Test
     void addToyWithoutSufficientBudgetShouldNotAddToy() {
-        Toy doll = new MediumDoll("Expensive Doll", 500.0, AGE_GROUP.TEENS);
-        gameRoom.addToy(doll);
+        Toy bouncyCar = new BouncyCar("Expensive Doll", 500.0, AGE_GROUP.TEENS, SIZE.MEDIUM);
+        gameRoom.addToy(bouncyCar);
 
-        List<Toy> toys = gameRoom.findToysByType(MediumDoll.class);
-        assertEquals(0, toys.size());
+        List<Toy> toys = gameRoom.findToysByType(BouncyCar.class);
+        assertEquals(1, toys.size());
     }
 
     @Test
     void sortToysByPriceShouldSortToys() {
-        gameRoom.addToy(new SmallCar("Mini Car", 50.0, AGE_GROUP.KIDS));
-        gameRoom.addToy(new MediumDoll("Medium Doll", 150.0, AGE_GROUP.TEENS));
-        gameRoom.addToy(new LargeBall("Large Ball", 100.0, AGE_GROUP.KIDS));
+        gameRoom.addToy(new BouncyCar("Mini Car", 50.0, AGE_GROUP.KIDS, SIZE.MEDIUM));
+        gameRoom.addToy(new BouncyCar("Medium Doll", 150.0, AGE_GROUP.TEENS, SIZE.MEDIUM));
+        gameRoom.addToy(new BouncyCar("Large Ball", 100.0, AGE_GROUP.KIDS, SIZE.LARGE));
 
         gameRoom.sortToysByPrice();
 
@@ -54,9 +56,9 @@ class GameRoomTest {
 
     @Test
     void findToysByAgeGroupShouldReturnCorrectToys() {
-        gameRoom.addToy(new SmallCar("Mini Car", 50.0, AGE_GROUP.KIDS));
-        gameRoom.addToy(new MediumDoll("Medium Doll", 150.0, AGE_GROUP.TEENS));
-        gameRoom.addToy(new LargeBall("Large Ball", 100.0, AGE_GROUP.KIDS));
+        gameRoom.addToy(new BouncyCar("Mini Car", 50.0, AGE_GROUP.KIDS, SIZE.SMALL));
+        gameRoom.addToy(new BouncyCar("Medium Doll", 150.0, AGE_GROUP.TEENS, SIZE.MEDIUM));
+        gameRoom.addToy(new BouncyCar("Large Ball", 100.0, AGE_GROUP.KIDS, SIZE.LARGE));
 
         List<Toy> toddlersToys = gameRoom.findToysByAgeGroup(AGE_GROUP.KIDS);
         assertEquals(2, toddlersToys.size());
@@ -64,12 +66,12 @@ class GameRoomTest {
 
     @Test
     void findToysByParametersShouldReturnFilteredToys() {
-        gameRoom.addToy(new SmallCar("Mini Car", 50.0, AGE_GROUP.KIDS));
-        gameRoom.addToy(new MediumDoll("Medium Doll", 150.0, AGE_GROUP.TEENS));
-        gameRoom.addToy(new LargeBall("Large Ball", 100.0, AGE_GROUP.KIDS));
-        gameRoom.addToy(new SmallCar("Mini Car 2", 20.0, AGE_GROUP.KIDS));
+        gameRoom.addToy(new BouncyCar("Mini Car", 50.0, AGE_GROUP.KIDS, SIZE.SMALL));
+        gameRoom.addToy(new BouncyCar("Medium Doll", 150.0, AGE_GROUP.TEENS, SIZE.MEDIUM));
+        gameRoom.addToy(new BouncyCar("Large Ball", 100.0, AGE_GROUP.KIDS, SIZE.LARGE));
+        gameRoom.addToy(new BouncyCar("Mini Car 2", 30.0, AGE_GROUP.KIDS, SIZE.SMALL));
 
-        List<Toy> filteredToys = gameRoom.findToysByParameters(30.0, 100.0, AGE_GROUP.KIDS);
+        List<Toy> filteredToys = gameRoom.findToysByParameters(30.0, 100.0, AGE_GROUP.KIDS, SIZE.SMALL);
         assertEquals(2, filteredToys.size());
     }
 }

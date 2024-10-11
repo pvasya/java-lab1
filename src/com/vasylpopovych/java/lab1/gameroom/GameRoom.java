@@ -1,4 +1,8 @@
-package com.vasylpopovych.java.lab1;
+package com.vasylpopovych.java.lab1.gameroom;
+
+import com.vasylpopovych.java.lab1.gameroom.toys.AGE_GROUP;
+import com.vasylpopovych.java.lab1.gameroom.toys.SIZE;
+import com.vasylpopovych.java.lab1.gameroom.toys.Toy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +27,12 @@ public class GameRoom {
         }
     }
 
+    public void sortToys(Comparator<Toy> comparator) {
+        TOYS.sort(comparator);
+    }
+
     public void sortToysByPrice() {
-        TOYS.sort(Comparator.comparingDouble(Toy::getPRICE));
+        sortToys(Comparator.comparingDouble(Toy::getPRICE));
     }
 
     public List<Toy> findToysByType(Class<?> type) {
@@ -35,11 +43,16 @@ public class GameRoom {
         return TOYS.stream().filter(toy -> toy.getAgeGroup() == ageGroup).collect(Collectors.toList());
     }
 
-    public List<Toy> findToysByParameters(Double minPrice, Double maxPrice, AGE_GROUP ageGroup) {
+    public List<Toy> findToysBySize(SIZE sizeOfToy) {
+        return TOYS.stream().filter(toy -> toy.getSizeOfToy() == sizeOfToy).collect(Collectors.toList());
+    }
+
+    public List<Toy> findToysByParameters(Double minPrice, Double maxPrice, AGE_GROUP ageGroup, SIZE sizeOfToy) {
         return TOYS.stream()
                 .filter(toy -> (minPrice == null || toy.getPRICE() >= minPrice) &&
                         (maxPrice == null || toy.getPRICE() <= maxPrice) &&
-                        (ageGroup == null || toy.getAgeGroup() == ageGroup))
+                        (ageGroup == null || toy.getAgeGroup() == ageGroup) &&
+                        (sizeOfToy == null || toy.getSizeOfToy() == sizeOfToy))
                 .collect(Collectors.toList());
     }
 
